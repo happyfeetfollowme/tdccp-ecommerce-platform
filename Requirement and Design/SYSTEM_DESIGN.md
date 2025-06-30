@@ -16,6 +16,8 @@ The system will be designed using a microservices architecture. This approach wi
 *   **Database:** Each microservice will have its own dedicated **PostgreSQL** database to ensure loose coupling. We will use the **Prisma** ORM for type-safe database access within each service.
 *   **Asynchronous Communication:** A message broker like **RabbitMQ** will be used for asynchronous communication between services (e.g., for event-based updates).
 
+![Microservices Architecture Diagram](System-Diagram.png)
+
 ## 2. Component Design and Technology Choices
 
 This section outlines the key design decisions for each major component of the system, presenting alternatives and justifying the final choice.
