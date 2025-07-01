@@ -33,6 +33,7 @@ model Product {
   imageUrl      String
   stock         Int
   preservedStock Int @default(0)
+  walletAddress String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
@@ -73,6 +74,7 @@ This section details the logic for each API endpoint.
       "description": "The latest and greatest gadget.",
       "price": 99.99,
       "imageUrl": "https://example.com/image.png",
+      "walletAddress": "xxxxxxxxxxxxxxx",
       "stock": 100
     }
     ```

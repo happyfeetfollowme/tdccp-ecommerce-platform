@@ -99,6 +99,7 @@ model Product {
   imageUrl      String
   stock         Int
   preservedStock Int @default(0)
+  walletAddress String
 }
 ```
 
@@ -113,6 +114,7 @@ model Order {
   status    OrderStatus @default(PROCESSING)
   total     Float
   items     Json        // Store a denormalized list of product details
+  walletAddress String  // The wallet address associated with this order
   createdAt DateTime    @default(now())
 }
 
@@ -173,7 +175,7 @@ The API Gateway will expose the following endpoints, which will be routed to the
 *   `POST /api/cart/items`: Add an item to the cart.
 *   `PUT /api/cart/items/:id`: Update the quantity of an item in the cart.
 *   `DELETE /api/cart/items/:id`: Remove an item from the cart.
-*   `POST /api/orders`: Create a new order.
+*   `POST /api/orders`: Create one or more new orders from the user's cart. The items in the cart are grouped by their `walletAddress`, and a separate order is created for each wallet address.
 *   `GET /api/orders`: Get a list of the current user's orders.
 *   `GET /api/orders/:id`: Get a single order by ID.
 *   `GET /api/admin/orders`: (Admin) Get a list of all orders.
