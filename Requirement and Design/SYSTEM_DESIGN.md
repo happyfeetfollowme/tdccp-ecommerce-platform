@@ -109,11 +109,12 @@ model Product {
 // prisma/schema.prisma in Order Service
 
 model Order {
-  id        String      @id @default(cuid())
-  userId    String      // ID from the User service
-  status    OrderStatus @default(PROCESSING)
-  total     Float
-  items     Json        // Store a denormalized list of product details
+  id          String      @id @default(cuid())
+  userId      String      // ID from the User service
+  status      OrderStatus @default(PROCESSING)
+  total       Float
+  shippingFee Float       @default(0.0)
+  items       Json        // Store a denormalized list of product details
   walletAddress String  // The wallet address associated with this order
   createdAt DateTime    @default(now())
 }
@@ -127,6 +128,7 @@ model Cart {
 
 enum OrderStatus {
   PROCESSING
+  WAITING_FOR_PAYMENT
   PAID
   SHIPPED
   DELIVERED

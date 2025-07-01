@@ -1,0 +1,228 @@
+<html>
+  <head>
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
+    <link
+      rel="stylesheet"
+      as="style"
+      onload="this.rel='stylesheet'"
+      href="https://fonts.googleapis.com/css2?display=swap&family=Noto+Sans%3Awght%40400%3B500%3B700%3B900&family=Plus+Jakarta+Sans%3Awght%40400%3B500%3B700%3B800"
+    />
+
+    <title>Stitch Design</title>
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  </head>
+  <body>
+    <div class="relative flex size-full min-h-screen flex-col bg-[#fcf8f8] group/design-root overflow-x-hidden" style='font-family: "Plus Jakarta Sans", "Noto Sans", sans-serif;'>
+      <div class="layout-container flex h-full grow flex-col">
+                <header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#f3e7e8] px-10 py-3">
+          <a href="./index.html" class="flex items-center gap-4 text-[#1b0e0e]">
+            <div class="size-4">
+              <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 4H17.3334V17.3334H30.6666V30.6666H44V44H4V4Z" fill="currentColor"></path></svg>
+            </div>
+            <h2 class="text-[#1b0e0e] text-lg font-bold leading-tight tracking-[-0.015em]">Crafty</h2>
+          </a>
+          <div class="flex flex-1 justify-end gap-2">
+            <a href="./cart.html"
+              class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 bg-[#f3e7e8] text-[#1b0e0e] gap-2 text-sm font-bold leading-normal tracking-[0.015em] min-w-0 px-2.5"
+            >
+              <div class="text-[#1b0e0e]" data-icon="ShoppingCart" data-size="20px" data-weight="regular">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" viewBox="0 0 256 256">
+                  <path
+                    d="M222.14,58.87A8,8,0,0,0,216,56H54.68L49.79,29.14A16,16,0,0,0,34.05,16H16a8,8,0,0,0,0,16h18L59.56,172.29a24,24,0,0,0,5.33,11.27,28,28,0,1,0,44.4,8.44h45.42A27.75,27.75,0,0,0,152,204a28,28,0,1,0,28-28H83.17a8,8,0,0,1-7.87-6.57L72.13,152h116a24,24,0,0,0,23.61-19.71l12.16-66.86A8,8,0,0,0,222.14,58.87ZM96,204a12,12,0,1,1-12-12A12,12,0,0,1,96,204Zm96,0a12,12,0,1,1-12-12A12,12,0,0,1,192,204Zm4-74.57A8,8,0,0,1,188.1,136H69.22L57.59,72H206.41Z"
+                  ></path>
+                </svg>
+              </div>
+            </a>
+            <a href="./user.html"
+              class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10"
+              style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCCzFDd_wC2OW50ClqQyqlwFL-veLbdFgteS5u_dFarV-XpfOPWOpIy9MaxxT_cCfsFw0HULDusEReLNJ7CYCtjeDI1CeuJRNxouznYu0k8CKdDTpjuml2PxU2crsz7kV0pAkd8-TnYsN_jsaVEDLbP2qJ1GGUgzbFqOBSu96FqKZsSoRkVMxdNZBHxRxxwaE-LGxJHOMxni7hfk9VE-otKUO1_lI-etocCrM2GzLMkN8qW9eQJQcg0WCvVGlQxjiAmhePe-l6Xb58");'
+            ></a>
+          </div>
+        </header>
+          <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+            <div class="flex flex-wrap justify-between gap-3 p-4">
+              <div class="flex min-w-72 flex-col gap-3">
+                <p class="text-[#1b0e0e] tracking-light text-[32px] font-bold leading-tight">Orders</p>
+                <p class="text-[#994d51] text-sm font-normal leading-normal">Manage and track all customer orders</p>
+              </div>
+            </div>
+            <div class="px-4 py-3">
+              <label class="flex flex-col min-w-40 h-12 w-full">
+                <div class="flex w-full flex-1 items-stretch rounded-lg h-full">
+                  <div
+                    class="text-[#994d51] flex border-none bg-[#f3e7e8] items-center justify-center pl-4 rounded-l-lg border-r-0"
+                    data-icon="MagnifyingGlass"
+                    data-size="24px"
+                    data-weight="regular"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+                      <path
+                        d="M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z"
+                      ></path>
+                    </svg>
+                  </div>
+                  <input
+                    placeholder="Search orders"
+                    class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#1b0e0e] focus:outline-0 focus:ring-0 border-none bg-[#f3e7e8] focus:border-none h-full placeholder:text-[#994d51] px-4 rounded-l-none border-l-0 pl-2 text-base font-normal leading-normal"
+                    value=""
+                  />
+                </div>
+              </label>
+            </div>
+            <div class="pb-3">
+              <div class="flex border-b border-[#e7d0d1] px-4 gap-8">
+                <a class="flex flex-col items-center justify-center border-b-[3px] border-b-[#e92932] text-[#1b0e0e] pb-[13px] pt-4" href="#">
+                  <p class="text-[#1b0e0e] text-sm font-bold leading-normal tracking-[0.015em]">All</p>
+                </a>
+                <a class="flex flex-col items-center justify-center border-b-[3px] border-b-transparent text-[#994d51] pb-[13px] pt-4" href="#">
+                  <p class="text-[#994d51] text-sm font-bold leading-normal tracking-[0.015em]">Pending</p>
+                </a>
+                <a class="flex flex-col items-center justify-center border-b-[3px] border-b-transparent text-[#994d51] pb-[13px] pt-4" href="#">
+                  <p class="text-[#994d51] text-sm font-bold leading-normal tracking-[0.015em]">Shipped</p>
+                </a>
+                <a class="flex flex-col items-center justify-center border-b-[3px] border-b-transparent text-[#994d51] pb-[13px] pt-4" href="#">
+                  <p class="text-[#994d51] text-sm font-bold leading-normal tracking-[0.015em]">Completed</p>
+                </a>
+              </div>
+            </div>
+            <div class="px-4 py-3 @container">
+              <div class="flex overflow-hidden rounded-lg border border-[#e7d0d1] bg-[#fcf8f8]">
+                <table class="flex-1">
+                  <thead>
+                    <tr class="bg-[#fcf8f8]">
+                      <th class="table-25dec679-9d54-47c5-816c-5d6b1d585d41-column-120 px-4 py-3 text-left text-[#1b0e0e] w-[400px] text-sm font-medium leading-normal">
+                        Order ID
+                      </th>
+                      <th class="table-25dec679-9d54-47c5-816c-5d6b1d585d41-column-240 px-4 py-3 text-left text-[#1b0e0e] w-[400px] text-sm font-medium leading-normal">
+                        Customer
+                      </th>
+                      <th class="table-25dec679-9d54-47c5-816c-5d6b1d585d41-column-360 px-4 py-3 text-left text-[#1b0e0e] w-[400px] text-sm font-medium leading-normal">Date</th>
+                      <th class="table-25dec679-9d54-47c5-816c-5d6b1d585d41-column-480 px-4 py-3 text-left text-[#1b0e0e] w-60 text-sm font-medium leading-normal">Status</th>
+                      <th class="table-25dec679-9d54-47c5-816c-5d6b1d585d41-column-600 px-4 py-3 text-left text-[#1b0e0e] w-[400px] text-sm font-medium leading-normal">Total</th>
+                  </thead>
+                  <tbody>
+                    <tr class="border-t border-t-[#e7d0d1]">
+                      <td class="table-25dec679-9d54-47c5-816c-5d6b1d585d41-column-120 h-[72px] px-4 py-2 w-[400px] text-[#1b0e0e] text-sm font-normal leading-normal"><a href="./order-details.html">#12345</a></td>
+                      <td class="table-25dec679-9d54-47c5-816c-5d6b1d585d41-column-240 h-[72px] px-4 py-2 w-[400px] text-[#994d51] text-sm font-normal leading-normal">
+                        Alice Johnson
+                      </td>
+                      <td class="table-25dec679-9d54-47c5-816c-5d6b1d585d41-column-360 h-[72px] px-4 py-2 w-[400px] text-[#994d51] text-sm font-normal leading-normal">
+                        2024-01-15
+                      </td>
+                      <td class="table-25dec679-9d54-47c5-816c-5d6b1d585d41-column-480 h-[72px] px-4 py-2 w-60 text-sm font-normal leading-normal">
+                        <button
+                          class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-8 px-4 bg-[#f3e7e8] text-[#1b0e0e] text-sm font-medium leading-normal w-full"
+                        >
+                          <span class="truncate">Pending</span>
+                        </button>
+                      </td>
+                      <td class="table-25dec679-9d54-47c5-816c-5d6b1d585d41-column-600 h-[72px] px-4 py-2 w-[400px] text-[#994d51] text-sm font-normal leading-normal">$150.00</td>
+                    </tr>
+                    <tr class="border-t border-t-[#e7d0d1]">
+                      <td class="table-25dec679-9d54-47c5-816c-5d6b1d585d41-column-120 h-[72px] px-4 py-2 w-[400px] text-[#1b0e0e] text-sm font-normal leading-normal"><a href="./order-details.html">#12346</a></td>
+                      <td class="table-25dec679-9d54-47c5-816c-5d6b1d585d41-column-240 h-[72px] px-4 py-2 w-[400px] text-[#994d51] text-sm font-normal leading-normal">
+                        Bob Williams
+                      </td>
+                      <td class="table-25dec679-9d54-47c5-816c-5d6b1d585d41-column-360 h-[72px] px-4 py-2 w-[400px] text-[#994d51] text-sm font-normal leading-normal">
+                        2024-01-16
+                      </td>
+                      <td class="table-25dec679-9d54-47c5-816c-5d6b1d585d41-column-480 h-[72px] px-4 py-2 w-60 text-sm font-normal leading-normal">
+                        <button
+                          class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-8 px-4 bg-[#f3e7e8] text-[#1b0e0e] text-sm font-medium leading-normal w-full"
+                        >
+                          <span class="truncate">Shipped</span>
+                        </button>
+                      </td>
+                      <td class="table-25dec679-9d54-47c5-816c-5d6b1d585d41-column-600 h-[72px] px-4 py-2 w-[400px] text-[#994d51] text-sm font-normal leading-normal">$200.00</td>
+                    </tr>
+                    <tr class="border-t border-t-[#e7d0d1]">
+                      <td class="table-25dec679-9d54-47c5-816c-5d6b1d585d41-column-120 h-[72px] px-4 py-2 w-[400px] text-[#1b0e0e] text-sm font-normal leading-normal"><a href="./order-details.html">#12347</a></td>
+                      <td class="table-25dec679-9d54-47c5-816c-5d6b1d585d41-column-240 h-[72px] px-4 py-2 w-[400px] text-[#994d51] text-sm font-normal leading-normal">
+                        Charlie Davis
+                      </td>
+                      <td class="table-25dec679-9d54-47c5-816c-5d6b1d585d41-column-360 h-[72px] px-4 py-2 w-[400px] text-[#994d51] text-sm font-normal leading-normal">
+                        2024-01-17
+                      </td>
+                      <td class="table-25dec679-9d54-47c5-816c-5d6b1d585d41-column-480 h-[72px] px-4 py-2 w-60 text-sm font-normal leading-normal">
+                        <button
+                          class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-8 px-4 bg-[#f3e7e8] text-[#1b0e0e] text-sm font-medium leading-normal w-full"
+                        >
+                          <span class="truncate">Completed</span>
+                        </button>
+                      </td>
+                      <td class="table-25dec679-9d54-47c5-816c-5d6b1d585d41-column-600 h-[72px] px-4 py-2 w-[400px] text-[#994d51] text-sm font-normal leading-normal">$100.00</td>
+                    </tr>
+                    <tr class="border-t border-t-[#e7d0d1]">
+                      <td class="table-25dec679-9d54-47c5-816c-5d6b1d585d41-column-120 h-[72px] px-4 py-2 w-[400px] text-[#1b0e0e] text-sm font-normal leading-normal"><a href="./order-details.html">#12348</a></td>
+                      <td class="table-25dec679-9d54-47c5-816c-5d6b1d585d41-column-240 h-[72px] px-4 py-2 w-[400px] text-[#994d51] text-sm font-normal leading-normal">
+                        Diana Evans
+                      </td>
+                      <td class="table-25dec679-9d54-47c5-816c-5d6b1d585d41-column-360 h-[72px] px-4 py-2 w-[400px] text-[#994d51] text-sm font-normal leading-normal">
+                        2024-01-18
+                      </td>
+                      <td class="table-25dec679-9d54-47c5-816c-5d6b1d585d41-column-480 h-[72px] px-4 py-2 w-60 text-sm font-normal leading-normal">
+                        <button
+                          class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-8 px-4 bg-[#f3e7e8] text-[#1b0e0e] text-sm font-medium leading-normal w-full"
+                        >
+                          <span class="truncate">Pending</span>
+                        </button>
+                      </td>
+                      <td class="table-25dec679-9d54-47c5-816c-5d6b1d585d41-column-600 h-[72px] px-4 py-2 w-[400px] text-[#994d51] text-sm font-normal leading-normal">$300.00</td>
+                    </tr>
+                    <tr class="border-t border-t-[#e7d0d1]">
+                      <td class="table-25dec679-9d54-47c5-816c-5d6b1d585d41-column-120 h-[72px] px-4 py-2 w-[400px] text-[#1b0e0e] text-sm font-normal leading-normal"><a href="./order-details.html">#12349</a></td>
+                      <td class="table-25dec679-9d54-47c5-816c-5d6b1d585d41-column-240 h-[72px] px-4 py-2 w-[400px] text-[#994d51] text-sm font-normal leading-normal">
+                        Ethan Clark
+                      </td>
+                      <td class="table-25dec679-9d54-47c5-816c-5d6b1d585d41-column-360 h-[72px] px-4 py-2 w-[400px] text-[#994d51] text-sm font-normal leading-normal">
+                        2024-01-19
+                      </td>
+                      <td class="table-25dec679-9d54-47c5-816c-5d6b1d585d41-column-480 h-[72px] px-4 py-2 w-60 text-sm font-normal leading-normal">
+                        <button
+                          class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-8 px-4 bg-[#f3e7e8] text-[#1b0e0e] text-sm font-medium leading-normal w-full"
+                        >
+                          <span class="truncate">Shipped</span>
+                        </button>
+                      </td>
+                      <td class="table-25dec679-9d54-47c5-816c-5d6b1d585d41-column-600 h-[72px] px-4 py-2 w-[400px] text-[#994d51] text-sm font-normal leading-normal">$250.00</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <style>
+                          @container(max-width:120px){.table-25dec679-9d54-47c5-816c-5d6b1d585d41-column-120{display: none;}}
+                @container(max-width:240px){.table-25dec679-9d54-47c5-816c-5d6b1d585d41-column-240{display: none;}}
+                @container(max-width:360px){.table-25dec679-9d54-47c5-816c-5d6b1d585d41-column-360{display: none;}}
+                @container(max-width:480px){.table-25dec679-9d54-47c5-816c-5d6b1d585d41-column-480{display: none;}}
+                @container(max-width:600px){.table-25dec679-9d54-47c5-816c-5d6b1d585d41-column-600{display: none;}}
+              </style>
+            </div>
+            <div class="flex items-center justify-center p-4">
+              <a href="#" class="flex size-10 items-center justify-center">
+                <div class="text-[#1b0e0e]" data-icon="CaretLeft" data-size="18px" data-weight="regular">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18px" height="18px" fill="currentColor" viewBox="0 0 256 256">
+                    <path d="M165.66,202.34a8,8,0,0,1-11.32,11.32l-80-80a8,8,0,0,1,0-11.32l80-80a8,8,0,0,1,11.32,11.32L91.31,128Z"></path>
+                  </svg>
+                </div>
+              </a>
+              <a class="text-sm font-bold leading-normal tracking-[0.015em] flex size-10 items-center justify-center text-[#1b0e0e] rounded-full bg-[#f3e7e8]" href="#">1</a>
+              <a class="text-sm font-normal leading-normal flex size-10 items-center justify-center text-[#1b0e0e] rounded-full" href="#">2</a>
+              <a class="text-sm font-normal leading-normal flex size-10 items-center justify-center text-[#1b0e0e] rounded-full" href="#">3</a>
+              <span class="text-sm font-normal leading-normal flex size-10 items-center justify-center text-[#1b0e0e] rounded-full" href="#">...</span>
+              <a class="text-sm font-normal leading-normal flex size-10 items-center justify-center text-[#1b0e0e] rounded-full" href="#">10</a>
+              <a href="#" class="flex size-10 items-center justify-center">
+                <div class="text-[#1b0e0e]" data-icon="CaretRight" data-size="18px" data-weight="regular">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18px" height="18px" fill="currentColor" viewBox="0 0 256 256">
+                    <path d="M181.66,133.66l-80,80a8,8,0,0,1-11.32-11.32L164.69,128,90.34,53.66a8,8,0,0,1,11.32-11.32l80,80A8,8,0,0,1,181.66,133.66Z"></path>
+                  </svg>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
