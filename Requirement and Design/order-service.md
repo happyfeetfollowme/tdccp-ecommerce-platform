@@ -26,13 +26,14 @@ generator client {
 }
 
 model Order {
-  id        String      @id @default(cuid())
-  userId    String
-  status    OrderStatus @default(PROCESSING)
-  total     Float
-  items     Json        // Denormalized list of product details
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
+  id          String      @id @default(cuid())
+  userId      String
+  status      OrderStatus @default(PROCESSING)
+  total       Float
+  shippingFee Float       @default(0.0)
+  items       Json        // Denormalized list of product details
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
 }
 
 model Cart {
@@ -45,6 +46,7 @@ model Cart {
 
 enum OrderStatus {
   PROCESSING
+  WAITING_FOR_PAYMENT
   PAID
   SHIPPED
   DELIVERED
@@ -92,6 +94,9 @@ enum OrderStatus {
 #### `GET /api/orders/:id`
 -   **Description:** Gets a single order by ID.
 -   **Logic:** Find the order by `id`, ensuring it belongs to the current user.
+    -   **Conditional Actions:**
+        -   If `status` is `PROCESSING` or `WAITING_FOR_PAYMENT`, allow "Cancel Order" action.
+        -   If `status` is `WAITING_FOR_PAYMENT`, allow "Pay Now" action.
 
 ### Admin Endpoints
 
@@ -99,9 +104,9 @@ enum OrderStatus {
 -   **Description:** (Admin) Gets a list of all orders.
 -   **Logic:** Return all orders from the database.
 
-#### `PUT /api/admin/orders/:id/status`
--   **Description:** (Admin) Updates the status of an order.
--   **Logic:** Update the `status` of the order. Publish an `OrderStatusUpdated` event.
+#### `PUT /api/admin/orders/:id`
+-   **Description:** (Admin) Updates an order's status, shipping fee, or total.
+-   **Logic:** Update the `status`, `shippingFee`, or `total` of the order. Publish an `OrderStatusUpdated` event if the status changes.
 
 ## 4. Asynchronous Communication
 

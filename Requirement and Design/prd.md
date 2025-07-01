@@ -44,7 +44,7 @@ This document outlines the product requirements for a new e-commerce platform. T
     2.  **Shipping Method:** The user selects a shipping method. For the initial release, a single, free shipping option will be presented.
     3.  **Order Review & Confirmation:** The user reviews their order details. The system groups items by their associated wallet address. Upon confirmation, one or more orders are placed (one for each unique wallet address), and their status is set to "Processing".
     4.  **Inventory Update:** The system deducts the purchased items from the available inventory.
-    5.  **Payment Notification:** The user is notified that the order(s) are ready for payment.
+    5.  **Payment Notification:** The user is notified that the order(s) are ready for payment, and the order status is updated to "Waiting for Payment".
     6.  **Payment:** The user is directed to a payment page to complete the purchase for each order using Solana Pay.
 *   **Order Confirmation:**
     *   After a successful payment, an order confirmation page is displayed, summarizing the details of all created orders.
@@ -53,7 +53,7 @@ This document outlines the product requirements for a new e-commerce platform. T
 *   **Authentication:**
     *   Users can register and log in using their Discord account (OAuth2).
 *   **Account Management:**
-    *   **Order History:** Users can view a list of their past and current orders, including order status and details.
+    *   **Order History:** Users can view a list of their past and current orders, including order status and details. Users can cancel orders that are in "Processing" or "Waiting for Payment" status.
     *   **Personal Information:** Users can manage their personal information, including their shipping addresses.
 
 ### 3.2. Backend (Admin Panel)
@@ -64,9 +64,8 @@ This document outlines the product requirements for a new e-commerce platform. T
 *   Admins can upload and manage product images.
 
 #### 3.2.2. Order Management
-*   Admins can view a list of all orders with their current status (e.g., Processing, Paid, Shipped, Delivered, Canceled).
-*   Admins can manually update an order's status to "Shipped". The system should then automatically update the status to "Delivered" after a set period.
-*   Admins can modify order details.
+*   Admins can view a list of all orders with their current status (e.g., Processing, Waiting for Payment, Paid, Shipped, Delivered, Canceled).
+*   Admins can modify order details, including the total price, shipping fee, and update the order's status.
 *   Admins can generate and manage invoices for orders.
 *   Admins can process payments and refunds. Payments will be handled via Solana Pay, while refunds will be processed manually.
 

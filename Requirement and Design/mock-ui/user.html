@@ -1,0 +1,158 @@
+<html>
+  <head>
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
+    <link
+      rel="stylesheet"
+      as="style"
+      onload="this.rel='stylesheet'"
+      href="https://fonts.googleapis.com/css2?display=swap&family=Noto+Sans%3Awght%40400%3B500%3B700%3B900&family=Plus+Jakarta+Sans%3Awght%40400%3B500%3B700%3B800"
+    />
+
+    <title>Stitch Design</title>
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  </head>
+  <body>
+    <div class="relative flex size-full min-h-screen flex-col bg-white group/design-root overflow-x-hidden" style='font-family: "Plus Jakarta Sans", "Noto Sans", sans-serif;'>
+      <div class="layout-container flex h-full grow flex-col">
+        <header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#f3e7e8] px-10 py-3">
+          <a href="./index.html" class="flex items-center gap-4 text-[#1b0e0e]">
+            <div class="size-4">
+              <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 4H17.3334V17.3334H30.6666V30.6666H44V44H4V4Z" fill="currentColor"></path></svg>
+            </div>
+            <h2 class="text-[#1b0e0e] text-lg font-bold leading-tight tracking-[-0.015em]">Crafty</h2>
+          </a>
+          <div class="flex flex-1 justify-end gap-2">
+            <a href="./cart.html"
+              class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 bg-[#f3e7e8] text-[#1b0e0e] gap-2 text-sm font-bold leading-normal tracking-[0.015em] min-w-0 px-2.5"
+            >
+              <div class="text-[#1b0e0e]" data-icon="ShoppingCart" data-size="20px" data-weight="regular">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" viewBox="0 0 256 256">
+                  <path
+                    d="M222.14,58.87A8,8,0,0,0,216,56H54.68L49.79,29.14A16,16,0,0,0,34.05,16H16a8,8,0,0,0,0,16h18L59.56,172.29a24,24,0,0,0,5.33,11.27,28,28,0,1,0,44.4,8.44h45.42A27.75,27.75,0,0,0,152,204a28,28,0,1,0,28-28H83.17a8,8,0,0,1-7.87-6.57L72.13,152h116a24,24,0,0,0,23.61-19.71l12.16-66.86A8,8,0,0,0,222.14,58.87ZM96,204a12,12,0,1,1-12-12A12,12,0,0,1,96,204Zm96,0a12,12,0,1,1-12-12A12,12,0,0,1,192,204Zm4-74.57A8,8,0,0,1,188.1,136H69.22L57.59,72H206.41Z"
+                  ></path>
+                </svg>
+              </div>
+            </a>
+            <a href="./user.html"
+              class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10"
+              style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCCzFDd_wC2OW50ClqQyqlwFL-veLbdFgteS5u_dFarV-XpfOPWOpIy9MaxxT_cCfsFw0HULDusEReLNJ7CYCtjeDI1CeuJRNxouznYu0k8CKdDTpjuml2PxU2crsz7kV0pAkd8-TnYsN_jsaVEDLbP2qJ1GGUgzbFqOBSu96FqKZsSoRkVMxdNZBHxRxxwaE-LGxJHOMxni7hfk9VE-otKUO1_lI-etocCrM2GzLMkN8qW9eQJQcg0WCvVGlQxjiAmhePe-l6Xb58");'
+            ></a>
+          </div>
+        </header>
+        <div class="px-40 flex flex-1 justify-center py-5">
+          <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+            <div class="flex flex-wrap justify-between gap-3 p-4"><p class="text-[#181111] tracking-light text-[32px] font-bold leading-tight min-w-72">Account</p></div>
+            <h3 class="text-[#181111] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Personal Information</h3>
+            <div class="flex items-center gap-4 bg-white px-4 min-h-[72px] py-2">
+              <div class="flex flex-col justify-center">
+                <p class="text-[#181111] text-base font-medium leading-normal line-clamp-1">Discord ID</p>
+                <p class="text-[#886364] text-sm font-normal leading-normal line-clamp-2">Sophia Clark</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-4 bg-white px-4 min-h-[72px] py-2">
+              <div class="flex flex-col justify-center">
+                <p class="text-[#181111] text-base font-medium leading-normal line-clamp-1">Email Address</p>
+                <p class="text-[#886364] text-sm font-normal leading-normal line-clamp-2">sophia.clark@email.com</p>
+              </div>
+            </div>
+            <h3 class="text-[#181111] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Order History</h3>
+            <div class="px-4 py-3 @container">
+              <div class="flex overflow-hidden rounded-xl border border-[#e5dcdc] bg-white">
+                <table class="flex-1">
+                  <thead>
+                    <tr class="bg-white">
+                      <th class="table-6d4156e0-670d-4f24-93f1-4201ad67fb81-column-120 px-4 py-3 text-left text-[#181111] w-[400px] text-sm font-medium leading-normal">Order</th>
+                      <th class="table-6d4156e0-670d-4f24-93f1-4201ad67fb81-column-240 px-4 py-3 text-left text-[#181111] w-[400px] text-sm font-medium leading-normal">Date</th>
+                      <th class="table-6d4156e0-670d-4f24-93f1-4201ad67fb81-column-360 px-4 py-3 text-left text-[#181111] w-60 text-sm font-medium leading-normal">Status</th>
+                      <th class="table-6d4156e0-670d-4f24-93f1-4201ad67fb81-column-480 px-4 py-3 text-left text-[#181111] w-[400px] text-sm font-medium leading-normal">Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="border-t border-t-[#e5dcdc]">
+                      <td class="table-6d4156e0-670d-4f24-93f1-4201ad67fb81-column-120 h-[72px] px-4 py-2 w-[400px] text-[#181111] text-sm font-normal leading-normal"><a href="./order-details.html">#12343</a></td>
+                      <td class="table-6d4156e0-670d-4f24-93f1-4201ad67fb81-column-240 h-[72px] px-4 py-2 w-[400px] text-[#886364] text-sm font-normal leading-normal">
+                        May 15, 2024
+                      </td>
+                      <td class="table-6d4156e0-670d-4f24-93f1-4201ad67fb81-column-360 h-[72px] px-4 py-2 w-60 text-sm font-normal leading-normal">
+                        <button
+                          class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-8 px-4 bg-[#f4f0f0] text-[#181111] text-sm font-medium leading-normal w-full"
+                        >
+                          <span class="truncate">Processing</span>
+                        </button>
+                      </td>
+                      <td class="table-6d4156e0-670d-4f24-93f1-4201ad67fb81-column-480 h-[72px] px-4 py-2 w-[400px] text-[#886364] text-sm font-normal leading-normal">$120.00</td>
+                    </tr>
+                    <tr class="border-t border-t-[#e5dcdc]">
+                      <td class="table-6d4156e0-670d-4f24-93f1-4201ad67fb81-column-120 h-[72px] px-4 py-2 w-[400px] text-[#181111] text-sm font-normal leading-normal"><a href="./order-details.html">#12344</a></td>
+                      <td class="table-6d4156e0-670d-4f24-93f1-4201ad67fb81-column-240 h-[72px] px-4 py-2 w-[400px] text-[#886364] text-sm font-normal leading-normal">
+                        May 15, 2024
+                      </td>
+                      <td class="table-6d4156e0-670d-4f24-93f1-4201ad67fb81-column-360 h-[72px] px-4 py-2 w-60 text-sm font-normal leading-normal">
+                        <button
+                          class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-8 px-4 bg-[#f4f0f0] text-[#181111] text-sm font-medium leading-normal w-full"
+                        >
+                          <span class="truncate">Wait for Payment</span>
+                        </button>
+                      </td>
+                      <td class="table-6d4156e0-670d-4f24-93f1-4201ad67fb81-column-480 h-[72px] px-4 py-2 w-[400px] text-[#886364] text-sm font-normal leading-normal">$120.00</td>
+                    </tr>
+                    <tr class="border-t border-t-[#e5dcdc]">
+                      <td class="table-6d4156e0-670d-4f24-93f1-4201ad67fb81-column-120 h-[72px] px-4 py-2 w-[400px] text-[#181111] text-sm font-normal leading-normal"><a href="./order-details.html">#12345</a></td>
+                      <td class="table-6d4156e0-670d-4f24-93f1-4201ad67fb81-column-240 h-[72px] px-4 py-2 w-[400px] text-[#886364] text-sm font-normal leading-normal">
+                        May 15, 2024
+                      </td>
+                      <td class="table-6d4156e0-670d-4f24-93f1-4201ad67fb81-column-360 h-[72px] px-4 py-2 w-60 text-sm font-normal leading-normal">
+                        <button
+                          class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-8 px-4 bg-[#f4f0f0] text-[#181111] text-sm font-medium leading-normal w-full"
+                        >
+                          <span class="truncate">Shipped</span>
+                        </button>
+                      </td>
+                      <td class="table-6d4156e0-670d-4f24-93f1-4201ad67fb81-column-480 h-[72px] px-4 py-2 w-[400px] text-[#886364] text-sm font-normal leading-normal">$120.00</td>
+                    </tr>
+                    <tr class="border-t border-t-[#e5dcdc]">
+                      <td class="table-6d4156e0-670d-4f24-93f1-4201ad67fb81-column-120 h-[72px] px-4 py-2 w-[400px] text-[#181111] text-sm font-normal leading-normal"><a href="./order-details.html">#12346</a></td>
+                      <td class="table-6d4156e0-670d-4f24-93f1-4201ad67fb81-column-240 h-[72px] px-4 py-2 w-[400px] text-[#886364] text-sm font-normal leading-normal">
+                        May 10, 2024
+                      </td>
+                      <td class="table-6d4156e0-670d-4f24-93f1-4201ad67fb81-column-360 h-[72px] px-4 py-2 w-60 text-sm font-normal leading-normal">
+                        <button
+                          class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-8 px-4 bg-[#f4f0f0] text-[#181111] text-sm font-medium leading-normal w-full"
+                        >
+                          <span class="truncate">Delivered</span>
+                        </button>
+                      </td>
+                      <td class="table-6d4156e0-670d-4f24-93f1-4201ad67fb81-column-480 h-[72px] px-4 py-2 w-[400px] text-[#886364] text-sm font-normal leading-normal">$85.00</td>
+                    </tr>
+                    <tr class="border-t border-t-[#e5dcdc]">
+                      <td class="table-6d4156e0-670d-4f24-93f1-4201ad67fb81-column-120 h-[72px] px-4 py-2 w-[400px] text-[#181111] text-sm font-normal leading-normal"><a href="./order-details.html">#12347</a></td>
+                      <td class="table-6d4156e0-670d-4f24-93f1-4201ad67fb81-column-240 h-[72px] px-4 py-2 w-[400px] text-[#886364] text-sm font-normal leading-normal">
+                        May 5, 2024
+                      </td>
+                      <td class="table-6d4156e0-670d-4f24-93f1-4201ad67fb81-column-360 h-[72px] px-4 py-2 w-60 text-sm font-normal leading-normal">
+                        <button
+                          class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-8 px-4 bg-[#f4f0f0] text-[#181111] text-sm font-medium leading-normal w-full"
+                        >
+                          <span class="truncate">Cancelled</span>
+                        </button>
+                      </td>
+                      <td class="table-6d4156e0-670d-4f24-93f1-4201ad67fb81-column-480 h-[72px] px-4 py-2 w-[400px] text-[#886364] text-sm font-normal leading-normal">$50.00</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <style>
+                          @container(max-width:120px){.table-6d4156e0-670d-4f24-93f1-4201ad67fb81-column-120{display: none;}}
+                @container(max-width:240px){.table-6d4156e0-670d-4f24-93f1-4201ad67fb81-column-240{display: none;}}
+                @container(max-width:360px){.table-6d4156e0-670d-4f24-93f1-4201ad67fb81-column-360{display: none;}}
+                @container(max-width:480px){.table-6d4156e0-670d-4f24-93f1-4201ad67fb81-column-480{display: none;}}
+              </style>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
