@@ -77,12 +77,13 @@ enum OrderStatus {
 ### Order Management
 
 #### `POST /api/orders`
--   **Description:** Creates a new order from the user's cart.
+-   **Description:** Creates one or more new orders from the user's cart. The items in the cart are grouped by their `walletAddress`, and a separate order is created for each wallet address.
 -   **Logic:**
     1.  Retrieve the user's cart.
-    2.  Create a new `Order` with the cart's items and a `PROCESSING` status.
-    3.  Clear the user's cart.
-    4.  Publish an `OrderCreated` event to RabbitMQ.
+    2.  Group the items in the cart by `walletAddress`.
+    3.  For each group of items, create a new `Order` with a `PROCESSING` status.
+    4.  Clear the user's cart.
+    5.  Publish an `OrderCreated` event for each created order to RabbitMQ.
 
 #### `GET /api/orders`
 -   **Description:** Gets a list of the current user's orders.

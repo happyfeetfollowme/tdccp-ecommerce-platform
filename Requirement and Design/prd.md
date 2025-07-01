@@ -42,12 +42,12 @@ This document outlines the product requirements for a new e-commerce platform. T
 *   **Checkout Process:**
     1.  **Shipping Information:** The user provides their shipping address.
     2.  **Shipping Method:** The user selects a shipping method. For the initial release, a single, free shipping option will be presented.
-    3.  **Order Review & Confirmation:** The user reviews their order details (items, shipping address, total cost). Upon confirmation, the order is placed and its status is set to "Processing".
+    3.  **Order Review & Confirmation:** The user reviews their order details. The system groups items by their associated wallet address. Upon confirmation, one or more orders are placed (one for each unique wallet address), and their status is set to "Processing".
     4.  **Inventory Update:** The system deducts the purchased items from the available inventory.
-    5.  **Payment Notification:** The user is notified that the order is ready for payment.
-    6.  **Payment:** The user is directed to a payment page to complete the purchase using Solana Pay. This will be the only available payment method.
+    5.  **Payment Notification:** The user is notified that the order(s) are ready for payment.
+    6.  **Payment:** The user is directed to a payment page to complete the purchase for each order using Solana Pay.
 *   **Order Confirmation:**
-    *   After a successful payment, an order confirmation page is displayed, summarizing the order details.
+    *   After a successful payment, an order confirmation page is displayed, summarizing the details of all created orders.
 
 #### 3.1.3. User Account
 *   **Authentication:**
