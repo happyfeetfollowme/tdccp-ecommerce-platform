@@ -3,8 +3,8 @@
 ## 1. Frontend User Interface (Frontend)
 
 ### Product Display
-- **Product Catalog:** Provide clear categories for easy browsing of products.
-- **Product Detail Page:** Include high-resolution product images, detailed descriptions, price, real-time inventory status, user reviews and ratings, and related product recommendations.
+- **Product Catalog:** Provide clear categories for easy Browse of products.
+- **Product Detail Page:** Include high-resolution product images, detailed descriptions, price, real-time inventory status, and user reviews and ratings.
 - **Search Functionality:** A powerful and fast search engine that supports multi-dimensional filtering (e.g., price, brand) and sorting (e.g., price low to high/high to low, new arrivals, popularity).
 
 ### Shopping Cart Functionality
@@ -21,11 +21,10 @@
 ### Checkout Process
 - **Multi-step checkout process:**
     1. Confirm shipping address.
-    2. Select shipping method (shipping fee is not displayed, only a prompt that it will be confirmed by the merchant).
-    3. User submits the order, and the order status automatically changes to "Awaiting merchant confirmation of shipping fee". At this time, the product inventory is temporarily locked.
-    4. Wait for the merchant to calculate and update the shipping fee in the backend.
-    5. After the merchant updates the shipping fee, the system notifies the user that the order is ready for payment.
-    6. The user completes the payment via the order details page by clicking a button to use Solana Pay. This is the only payment method.
+    2. User submits the order, and the order status automatically changes to "Awaiting merchant confirmation of shipping fee". At this time, the product inventory is temporarily locked.
+    3. Wait for the merchant to calculate and update the shipping fee in the backend.
+    4. After the merchant updates the shipping fee, the system notifies the user that the order is ready for payment.
+    5. The user completes the payment via the order details page by clicking a button to use Solana Pay. This is the only payment method.
 - **Order Confirmation Page:** Before final payment, clearly display all order information (products, quantities, unit prices, total price, and the shipping fee to be confirmed).
 
 ## 2. Backend Management System (Backend/Admin Panel)
