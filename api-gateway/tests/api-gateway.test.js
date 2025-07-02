@@ -3,9 +3,14 @@ const express = require('express');
 const proxy = require('express-http-proxy');
 const jwt = require('jsonwebtoken');
 
-// Mock the express app and proxy for testing purposes
-const app = express();
-app.use(express.json());
+// Import everything needed for shutdown from your app
+const { app, server } = require('../src/index');
+
+// This code runs once after all tests in this file are done.
+afterAll(async () => {
+    // We need to wait for the server to close before Jest can exit.
+    await new Promise(resolve => server.close(resolve));
+});
 
 // Mock JWT secret
 process.env.JWT_SECRET = 'test_jwt_secret';

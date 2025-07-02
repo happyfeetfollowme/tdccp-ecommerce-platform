@@ -1,5 +1,4 @@
 const request = require('supertest');
-const express = require('express');
 const { PrismaClient } = require('@prisma/client');
 const amqp = require('amqplib');
 
@@ -34,8 +33,14 @@ jest.mock('amqplib', () => ({
     })),
 }));
 
-// Import the actual app after mocks are set up
-const app = require('../src/index'); // Assuming your main app file is src/index.js
+// Import everything needed for shutdown from your app
+const { app, server } = require('../src/index');
+
+// This code runs once after all tests in this file are done.
+afterAll(async () => {
+    // We need to wait for the server to close before Jest can exit.
+    await new Promise(resolve => server.close(resolve));
+});
 
 describe('Order Service API', () => {
     const mockUserId = 'testUserId';

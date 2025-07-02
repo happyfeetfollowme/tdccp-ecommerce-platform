@@ -36,8 +36,14 @@ jest.mock('passport', () => ({
 jest.mock('passport-discord');
 
 // Import the app *after* all mocks are set up
-const app = require('../src/index');
+const { app, server } = require('../src/index');
 const prisma = new PrismaClient();
+
+// This code runs once after all tests in this file are done.
+afterAll(async () => {
+    // We need to wait for the server to close before Jest can exit.
+    await new Promise(resolve => server.close(resolve));
+});
 
 describe('User Service API', () => {
     beforeEach(() => {
