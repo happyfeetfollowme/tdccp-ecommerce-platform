@@ -202,6 +202,8 @@ app.put('/api/admin/orders/:id', authenticateJWT, async (req, res) => {
 });
 
 const PORT = process.env.PORT || 3003;
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
     console.log(`Order service listening on port ${PORT}`);
 });
+
+module.exports = { app, server };

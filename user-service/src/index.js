@@ -86,10 +86,12 @@ app.put('/api/users/me', authenticateJWT, async (req, res) => {
 
 const PORT = process.env.PORT || 3001;
 
+let server;
+
 if (require.main === module) {
-    app.listen(PORT, () => {
+    server = app.listen(PORT, () => {
         console.log(`User service listening on port ${PORT}`);
     });
 }
 
-module.exports = app;
+module.exports = { app, server };
