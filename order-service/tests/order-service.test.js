@@ -1,8 +1,19 @@
 const request = require('supertest');
-const { PrismaClient } = require('@prisma/client');
-const amqp = require('amqplib');
+const { PrismaClient } = require('@prisma/client'); // Ensure this is imported
 
-// Mock PrismaClient
+// Define all constants needed by mocks first
+const mockUserId = 'testUserId'; // Used by auth mock
+const mockAmqpPublish = jest.fn(); // Used by amqplib mock structure
+const mockAmqpChannel = {
+    assertQueue: jest.fn(),
+    publish: mockAmqpPublish,
+    consume: jest.fn(),
+};
+const mockAmqpConnection = { // Used by amqplib mock
+    createChannel: jest.fn().mockResolvedValue(mockAmqpChannel),
+};
+
+// Mock PrismaClient - this mock doesn't depend on the above constants
 jest.mock('@prisma/client', () => {
     const mPrismaClient = {
         order: {
@@ -20,21 +31,27 @@ jest.mock('@prisma/client', () => {
     return { PrismaClient: jest.fn(() => mPrismaClient) };
 });
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient(); // Make sure prisma instance is available for tests
 
-// Mock amqplib
+// Mock amqplib - uses mockAmqpConnection
 jest.mock('amqplib', () => ({
-    connect: jest.fn(() => ({
-        createChannel: jest.fn(() => ({
-            assertQueue: jest.fn(),
-            publish: jest.fn(),
-            consume: jest.fn(),
-        })),
-    })),
+    connect: jest.fn().mockResolvedValue(mockAmqpConnection),
+}));
+
+// Mock the authenticateJWT middleware - uses mockUserId
+jest.mock('../src/middleware/auth', () => ({
+    authenticateJWT: jest.fn((req, res, next) => {
+        req.userId = mockUserId;
+        if (req.headers['x-admin'] === 'true') {
+            req.isAdmin = true; // For admin tests
+        }
+        next();
+    })
 }));
 
 // Import everything needed for shutdown from your app
-const { app, server } = require('../src/index');
+// This MUST come AFTER all jest.mock calls
+const { app, server } = require('../src/index'); // Must be after jest.mock
 
 // This code runs once after all tests in this file are done.
 afterAll(async () => {
@@ -43,19 +60,12 @@ afterAll(async () => {
 });
 
 describe('Order Service API', () => {
-    const mockUserId = 'testUserId';
+    // mockUserId is already defined above for the mock
 
     beforeEach(() => {
         jest.clearAllMocks();
-        // Mock the authenticateJWT middleware to always pass with a mockUserId
-        app._router.stack.forEach((middleware) => {
-            if (middleware.handle.name === 'authenticateJWT') {
-                middleware.handle = (req, res, next) => {
-                    req.userId = mockUserId;
-                    next();
-                };
-            }
-        });
+        // The console logs for app and app._router can be removed now.
+        // The problematic app._router.stack manipulation is also removed.
     });
 
     describe('Cart Management', () => {
@@ -150,7 +160,7 @@ describe('Order Service API', () => {
             expect(res.body.length).toEqual(2); // Two orders created
             expect(prisma.order.create).toHaveBeenCalledTimes(2);
             expect(prisma.cart.update).toHaveBeenCalledWith({ where: { id: mockCart.id }, data: { items: [] } });
-            expect(amqp.connect().createChannel().publish).toHaveBeenCalledTimes(2);
+            expect(mockAmqpPublish).toHaveBeenCalledTimes(2); // Use the direct mock reference
         });
 
         test('GET /api/orders - should return user orders', async () => {
@@ -177,18 +187,8 @@ describe('Order Service API', () => {
     });
 
     describe('Admin Endpoints', () => {
-        beforeEach(() => {
-            // Re-mock the authenticateJWT middleware for admin tests
-            app._router.stack.forEach((middleware) => {
-                if (middleware.handle.name === 'authenticateJWT') {
-                    middleware.handle = (req, res, next) => {
-                        req.userId = mockUserId;
-                        req.isAdmin = true; // Simulate admin user
-                        next();
-                    };
-                }
-            });
-        });
+        // The beforeEach that caused issues is removed.
+        // The global mock for authenticateJWT now handles the isAdmin logic based on 'x-admin' header.
 
         test('GET /api/admin/orders - should return all orders for admin', async () => {
             const mockOrders = [{ id: 'order1' }, { id: 'order2' }];
@@ -215,7 +215,7 @@ describe('Order Service API', () => {
             expect(res.statusCode).toEqual(200);
             expect(res.body).toEqual(updatedOrder);
             expect(prisma.order.update).toHaveBeenCalledWith({ where: { id: 'order1' }, data: { status: 'SHIPPED' } });
-            expect(amqp.connect().createChannel().publish).toHaveBeenCalledWith(
+            expect(mockAmqpPublish).toHaveBeenCalledWith( // Use the direct mock reference
                 '', 'order_events', Buffer.from(JSON.stringify({ eventName: 'OrderStatusUpdated', data: { orderId: 'order1', newStatus: 'SHIPPED' } }))
             );
         });

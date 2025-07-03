@@ -1,9 +1,31 @@
 const request = require('supertest');
 const jwt = require('jsonwebtoken');
 const { PrismaClient } = require('@prisma/client');
-const passport = require('passport');
+// passport is mocked, so we don't require the original here at the top for use.
+// We will get a reference to the mock if needed after the mock definition.
 
-// Mock PrismaClient
+// 1. Define functions/variables needed by mock factories FIRST
+const mockDiscordStrategyMiddleware = jest.fn((req, res, next) => {
+    // This is the middleware that passport.authenticate('discord') should return.
+    // We can check if this specific middleware was called.
+    if (mockPassportAuthenticateFn.mock.user) { // Keep for callback logic
+        req.user = mockPassportAuthenticateFn.mock.user;
+    }
+    next();
+});
+
+const mockPassportAuthenticateFn = jest.fn((strategy, options) => {
+    if (strategy === 'discord') {
+        return mockDiscordStrategyMiddleware;
+    }
+    // Default fallback for any other strategy calls if needed during setup
+    return (req, res, next) => next();
+});
+// Add a spot for tests to place the mock user, directly on the mock function itself
+mockPassportAuthenticateFn.mock.user = null;
+
+
+// 2. ALL jest.mock calls
 jest.mock('@prisma/client', () => {
     const mPrismaClient = {
         user: {
@@ -15,50 +37,51 @@ jest.mock('@prisma/client', () => {
     return { PrismaClient: jest.fn(() => mPrismaClient) };
 });
 
-// Mock Passport and its strategies
 jest.mock('passport', () => ({
     initialize: jest.fn(() => (req, res, next) => next()),
     use: jest.fn(),
     serializeUser: jest.fn(),
     deserializeUser: jest.fn(),
-    // ✅ CORRECTED MOCK: `authenticate` now returns a function, as Express expects.
-    authenticate: jest.fn((strategy, options) => {
-        // This function will be called within the tests to simulate different outcomes.
-        return (req, res, next) => {
-            // If a specific test provides a user, attach it to the request.
-            if (passport.authenticate.mock.user) {
-                req.user = passport.authenticate.mock.user;
-            }
-            next();
-        };
-    }),
+    authenticate: mockPassportAuthenticateFn, // Use the pre-defined mock function
 }));
-jest.mock('passport-discord');
 
-// Import the app *after* all mocks are set up
+jest.mock('passport-discord'); // This is a simple mock, no factory needed unless we configure it
+
+// 3. Global test setup like `prisma` instance for tests
+const prisma = new PrismaClient(); // Uses the mocked PrismaClient
+
+// 4. Import the actual app after mocks are set up
 const { app, server } = require('../src/index');
-const prisma = new PrismaClient();
 
 // This code runs once after all tests in this file are done.
 afterAll(async () => {
-    // We need to wait for the server to close before Jest can exit.
-    await new Promise(resolve => server.close(resolve));
+    if (server) { // server might not be defined if app init fails
+        await new Promise(resolve => server.close(resolve));
+    }
 });
 
 describe('User Service API', () => {
     beforeEach(() => {
         jest.clearAllMocks();
         // Clear any user set by a previous test
-        delete passport.authenticate.mock.user;
-        process.env.JWT_SECRET = 'test-secret';
+        mockPassportAuthenticateFn.mock.user = null; // Reset the mock user
+        process.env.JWT_SECRET = 'test-secret'; // Ensure JWT secret is set for each test
     });
 
     // --- Authentication Routes ---
     describe('GET /api/auth/discord', () => {
-        it('should attempt to authenticate with discord', async () => {
+        it('should invoke the discord authentication middleware', async () => {
+            // Clear the specific middleware mock before the test to ensure clean state for this test
+            mockDiscordStrategyMiddleware.mockClear();
+
             await request(app).get('/api/auth/discord');
-            // Check that passport.authenticate was called for the 'discord' strategy
-            expect(passport.authenticate).toHaveBeenCalledWith('discord');
+
+            // Verify that the middleware we associated with 'discord' strategy was called
+            expect(mockDiscordStrategyMiddleware).toHaveBeenCalledTimes(1);
+            // Optional: also verify that mockPassportAuthenticateFn was called with 'discord'
+            // This happens at app setup, so it won't be cleared by beforeEach's clearAllMocks
+            // if we are careful. However, testing mockDiscordStrategyMiddleware is more direct for the route's behavior.
+            // expect(mockPassportAuthenticateFn).toHaveBeenCalledWith('discord');
         });
     });
 
@@ -66,7 +89,7 @@ describe('User Service API', () => {
         it('should handle successful authentication and return a JWT', async () => {
             const mockUser = { id: 'user123', email: 'test@example.com' };
             // Set the user that the mock should return
-            passport.authenticate.mock.user = mockUser;
+            mockPassportAuthenticateFn.mock.user = mockUser;
 
             const response = await request(app).get('/api/auth/discord/callback');
 
