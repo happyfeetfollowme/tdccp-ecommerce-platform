@@ -1,5 +1,6 @@
 require('dotenv').config();
 const express = require('express');
+const session = require('express-session');
 const passport = require('passport');
 const DiscordStrategy = require('passport-discord').Strategy;
 const jwt = require('jsonwebtoken');
@@ -9,6 +10,12 @@ const prisma = new PrismaClient();
 const app = express();
 
 app.use(express.json());
+app.use(session({
+    secret: process.env.SESSION_SECRET || 'supersecret',
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: process.env.NODE_ENV === 'production' }
+}));
 app.use(passport.initialize());
 
 passport.serializeUser((user, done) => {
