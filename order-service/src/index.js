@@ -33,17 +33,7 @@ const publishEvent = (eventName, data) => {
     }
 };
 
-const authenticateJWT = (req, res, next) => {
-    // This is a placeholder. In a real application, this would validate a JWT
-    // and extract the userId. For now, we'll assume a userId is passed in a header.
-    const userId = req.headers['x-user-id'];
-    if (userId) {
-        req.userId = userId;
-        next();
-    } else {
-        res.status(401).send('Unauthorized');
-    }
-};
+const { authenticateJWT } = require('./middleware/auth');
 
 // Cart Management
 app.get('/api/cart', authenticateJWT, async (req, res) => {

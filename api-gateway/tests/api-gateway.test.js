@@ -1,100 +1,131 @@
+// Set environment variables for mock services BEFORE requiring the app
+process.env.USER_SERVICE_URL = 'http://localhost:3001';
+process.env.PRODUCT_SERVICE_URL = 'http://localhost:3002';
+process.env.ORDER_SERVICE_URL = 'http://localhost:3003';
+process.env.PAYMENT_SERVICE_URL = 'http://localhost:3004';
+process.env.JWT_SECRET = 'test_jwt_secret';
+
 const request = require('supertest');
 const express = require('express');
-const proxy = require('express-http-proxy');
+// Note: We don't need `proxy` here anymore if the app itself uses the correct URLs.
+// const proxy = require('express-http-proxy');
 const jwt = require('jsonwebtoken');
 
-// Import everything needed for shutdown from your app
+// Import everything needed for shutdown from your app AFTER setting env vars
 const { app, server } = require('../src/index');
 
 // This code runs once after all tests in this file are done.
 afterAll(async () => {
     // We need to wait for the server to close before Jest can exit.
     await new Promise(resolve => server.close(resolve));
+    // Reset any environment variables changed for testing if necessary,
+    // though Jest typically runs tests in separate processes.
 });
 
-// Mock JWT secret
-process.env.JWT_SECRET = 'test_jwt_secret';
 
-// Mock authentication middleware
-const authenticateJWT = (req, res, next) => {
-    const authHeader = req.headers.authorization;
-
-    if (authHeader) {
-        const token = authHeader.split(' ')[1];
-
-        jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-            if (err) {
-                return res.sendStatus(403);
-            }
-            req.user = user;
-            req.headers['X-User-Id'] = user.userId; // Simulate X-User-Id header
-            next();
-        });
-    } else {
-        res.sendStatus(401);
-    }
-};
-
-// Mock public routes
-const publicRoutes = [
-    { method: 'POST', path: '/api/auth/login' },
-    { method: 'POST', path: '/api/auth/register' },
-    { method: 'GET', path: '/api/products' }
-];
-
-// Mock conditional authentication middleware
-app.use((req, res, next) => {
-    const isPublic = publicRoutes.some(route => {
-        const pathMatches = req.path.startsWith(route.path);
-        const methodMatches = req.method.toUpperCase() === route.method.toUpperCase();
-        return pathMatches && methodMatches;
-    });
-
-    if (isPublic) {
-        return next();
-    }
-    return authenticateJWT(req, res, next);
-});
+// It seems the test was trying to re-apply middleware that's already in src/index.js.
+// This can lead to issues. The app from src/index.js should be tested as is.
+// We rely on the environment variables to direct the app to mock services.
 
 // Mock downstream services
 const mockUserService = express();
-mockUserService.get('/api/users/me', (req, res) => res.status(200).json({ id: req.headers['x-user-id'], email: 'test@example.com' }));
-mockUserService.post('/api/auth/login', (req, res) => res.status(200).json({ message: 'Logged in' }));
-mockUserService.post('/api/auth/register', (req, res) => res.status(201).json({ message: 'Registered' }));
+mockUserService.use(express.json()); // Ensure mock services can parse JSON bodies
+mockUserService.get('/me', (req, res) => { // Path changed from /api/users/me
+    // Check for X-User-Id which should be set by authenticateJWT in the main app
+    if (req.headers['x-user-id']) {
+        res.status(200).json({ id: req.headers['x-user-id'], email: 'test@example.com' });
+    } else {
+        // This case might indicate an issue if a protected route reaches here without X-User-Id
+        res.status(400).json({ message: 'X-User-Id header missing in mock user service' });
+    }
+});
+mockUserService.post('/login', (req, res) => { // Path changed from /api/auth/login
+    res.status(200).json({ message: 'Logged in' });
+});
+mockUserService.post('/register', (req, res) => { // Path changed from /api/auth/register
+    res.status(201).json({ message: 'Registered' });
+});
 
 const mockProductService = express();
-mockProductService.get('/api/products', (req, res) => res.status(200).json([{ id: 'prod1', name: 'Product 1' }]));
+mockProductService.use(express.json());
+// Path changed from /api/products. Assuming /api/products in gateway proxies to / at product service.
+mockProductService.get('/', (req, res) => {
+    res.status(200).json([{ id: 'prod1', name: 'Product 1' }]);
+});
 
 const mockOrderService = express();
-mockOrderService.get('/api/orders', (req, res) => res.status(200).json([{ id: 'order1' }]));
+mockOrderService.use(express.json());
+// Path changed from /api/orders. Assuming /api/orders in gateway proxies to / at order service.
+mockOrderService.get('/', (req, res) => {
+    res.status(200).json([{ id: 'order1' }]);
+});
+// Add other necessary mock routes for order service if tests require them
 
 const mockPaymentService = express();
-mockPaymentService.post('/api/payments/charge', (req, res) => res.status(200).json({ message: 'Payment initiated' }));
+mockPaymentService.use(express.json());
+// Path changed from /api/payments/charge. Assuming /api/payments in gateway proxies /charge path.
+mockPaymentService.post('/charge', (req, res) => {
+    res.status(200).json({ message: 'Payment initiated' });
+});
 
-// Apply proxy routes to the mock app
-app.use('/api/auth', proxy('http://localhost:3001', { forwardPath: (req) => `/api/auth${req.url}` }));
-app.use('/api/users', proxy('http://localhost:3001', { forwardPath: (req) => `/api/users${req.url}` }));
-app.use('/api/products', proxy('http://localhost:3002', { forwardPath: (req) => `/api/products${req.url}` }));
-app.use('/api/cart', proxy('http://localhost:3003', { forwardPath: (req) => `/api/cart${req.url}` }));
-app.use('/api/orders', proxy('http://localhost:3003', { forwardPath: (req) => `/api/orders${req.url}` }));
-app.use('/api/admin/orders', proxy('http://localhost:3003', { forwardPath: (req) => `/api/admin/orders${req.url}` }));
-app.use('/api/payments', proxy('http://localhost:3004', { forwardPath: (req) => `/api/payments${req.url}` }));
+
+// The app imported from src/index.js is already configured with proxies.
+// We don't need to apply them again here. The key is that it uses the
+// environment variables we set above (e.g., process.env.USER_SERVICE_URL).
 
 describe('API Gateway', () => {
     let userServiceServer, productServiceServer, orderServiceServer, paymentServiceServer;
 
-    beforeAll(() => {
-        userServiceServer = mockUserService.listen(3001);
-        productServiceServer = mockProductService.listen(3002);
-        orderServiceServer = mockOrderService.listen(3003);
-        paymentServiceServer = mockPaymentService.listen(3004);
+    beforeAll(async () => {
+        const startServer = (service, port) => new Promise((resolve, reject) => {
+            const server = service.listen(port, () => {
+                console.log(`Mock service listening on port ${port}`);
+                resolve(server);
+            });
+            server.on('error', reject);
+        });
+
+        try {
+            [
+                userServiceServer,
+                productServiceServer,
+                orderServiceServer,
+                paymentServiceServer
+            ] = await Promise.all([
+                startServer(mockUserService, 3001),
+                startServer(mockProductService, 3002),
+                startServer(mockOrderService, 3003),
+                startServer(mockPaymentService, 3004)
+            ]);
+        } catch (error) {
+            console.error("Failed to start mock servers", error);
+            throw error; // Fail fast if servers don't start
+        }
     });
 
-    afterAll(() => {
-        userServiceServer.close();
-        productServiceServer.close();
-        orderServiceServer.close();
-        paymentServiceServer.close();
+    afterAll(async () => {
+        const closeServer = (server) => new Promise((resolve, reject) => {
+            if (server) {
+                server.close(err => {
+                    if (err) return reject(err);
+                    resolve();
+                });
+            } else {
+                resolve(); // Resolve if server isn't defined (e.g., setup failed)
+            }
+        });
+
+        try {
+            await Promise.all([
+                closeServer(userServiceServer),
+                closeServer(productServiceServer),
+                closeServer(orderServiceServer),
+                closeServer(paymentServiceServer)
+            ]);
+        } catch (error) {
+            console.error("Failed to close mock servers", error);
+            // Decide if you want to throw here or just log
+        }
     });
 
     const generateToken = (userId) => {

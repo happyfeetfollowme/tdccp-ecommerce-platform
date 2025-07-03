@@ -36,12 +36,8 @@ async function connectRabbitMQ() {
                             }
                             break;
                         case 'OrderPaid':
-                            // Assuming data.items is available from the original order for stock adjustment
-                            // If not, you might need to fetch the order details from the order service
-                            // For now, let's assume data.items contains the product details
-                            const order = await prisma.order.findUnique({ where: { id: data.orderId } }); // This would require a direct call to order service or denormalization
-                            if (order && order.items) {
-                                for (const item of order.items) {
+                            if (data.items && Array.isArray(data.items)) {
+                                for (const item of data.items) {
                                     await prisma.product.update({
                                         where: { id: item.productId },
                                         data: {
@@ -49,13 +45,13 @@ async function connectRabbitMQ() {
                                         }
                                     });
                                 }
+                            } else {
+                                console.warn(`OrderPaid event for order ${data.orderId} missing items. Stock not updated.`);
                             }
                             break;
                         case 'OrderCanceled':
-                            // Similar to OrderPaid, assuming data.items or fetching order details
-                            const canceledOrder = await prisma.order.findUnique({ where: { id: data.orderId } });
-                            if (canceledOrder && canceledOrder.items) {
-                                for (const item of canceledOrder.items) {
+                            if (data.items && Array.isArray(data.items)) {
+                                for (const item of data.items) {
                                     await prisma.product.update({
                                         where: { id: item.productId },
                                         data: {
@@ -64,6 +60,8 @@ async function connectRabbitMQ() {
                                         }
                                     });
                                 }
+                            } else {
+                                console.warn(`OrderCanceled event for order ${data.orderId} missing items. Stock not updated.`);
                             }
                             break;
                     }
@@ -84,14 +82,7 @@ async function connectRabbitMQ() {
 
 connectRabbitMQ();
 
-const authenticateJWT = (req, res, next) => {
-    // This is a placeholder for JWT authentication. In a real app,
-    // you'd validate the token and extract user roles.
-    // For now, we'll assume all requests are authenticated and
-    // admin status is determined by a header for demonstration.
-    req.isAdmin = req.headers['x-admin'] === 'true';
-    next();
-};
+const { authenticateJWT } = require('./middleware/auth');
 
 // API Endpoints
 app.get('/api/products', async (req, res) => {
