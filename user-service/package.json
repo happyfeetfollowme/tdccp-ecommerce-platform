@@ -18,11 +18,12 @@
     "@prisma/client": "^6.11.0",
     "dotenv": "^17.0.1",
     "express": "^5.1.0",
+    "express-session": "^1.18.0",
     "jsonwebtoken": "^9.0.2",
     "passport": "^0.7.0",
     "passport-discord": "^0.1.4",
     "prisma": "^6.11.0",
-    "express-session": "^1.18.0"
+    "start": "^5.1.0"
   },
   "devDependencies": {
     "jest": "^29.7.0",
