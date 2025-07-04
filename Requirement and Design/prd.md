@@ -54,18 +54,20 @@ This document outlines the product requirements for a new e-commerce platform. T
     * **Order History:** Users can view a list of their past and current orders, including order status and details. Users can cancel orders that are in "Processing" or "Waiting for Payment" status.
     * **Personal Information:** Users can manage their personal information, including their shipping addresses.
 
-### 3.2. Backend (Admin Panel)
+### 3.2. Admin Portal
 
 #### 3.2.1. Product Management
 * Admins can perform CRUD (Create, Read, Update, Delete) operations on products.
 * Admins can manage all product details, including name, description, price, and inventory levels.
 * Admins can upload and manage product images.
+* A mockup for the product management interface is available at [Requirement and Design/mock-ui/admin-products.html](./mock-ui/admin-products.html).
 
 #### 3.2.2. Order Management
 * Admins can view a list of all orders with their current status (e.g., Processing, Waiting for Payment, Paid, Shipped, Delivered, Canceled).
 * Admins can modify order details, including the total price, shipping fee, and update the order's status.
 * Admins can generate and manage invoices for orders.
 * Admins can process payments and refunds. Payments will be handled via Solana Pay, while refunds will be processed manually.
+* A mockup for the order management interface is available at [Requirement and Design/mock-ui/admin-orders.html](./mock-ui/admin-orders.html).
 
 #### 3.2.3. Inventory Management
 * Inventory levels are automatically updated when an order is paid for or canceled.
