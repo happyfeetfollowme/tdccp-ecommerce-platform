@@ -154,16 +154,27 @@ app.post('/api/orders', authenticateJWT, async (req, res) => {
 });
 
 app.get('/api/orders', authenticateJWT, async (req, res) => {
+    // Disable caching for this endpoint to always return fresh data
+    res.set('Cache-Control', 'no-store');
+    console.log(`Fetching orders for user: ${req.userId}`);
     const orders = await prisma.order.findMany({ where: { userId: req.userId } });
+    console.log(`Found ${orders.length} orders for user ${req.userId}`);
     res.json(orders);
 });
 
 app.get('/api/orders/:id', authenticateJWT, async (req, res) => {
     const { id } = req.params;
+    console.log(`Fetching order ${id} for user ${req.userId}`);
+    
     const order = await prisma.order.findUnique({ where: { id, userId: req.userId } });
+    console.log(`Order found:`, order ? 'Yes' : 'No');
+    
     if (!order) {
+        console.log(`Order ${id} not found for user ${req.userId}`);
         return res.status(404).send('Order not found');
     }
+    
+    console.log(`Returning order:`, order.id);
     res.json(order);
 });
 
@@ -189,6 +200,12 @@ app.put('/api/admin/orders/:id', authenticateJWT, async (req, res) => {
     }
 
     res.json(updatedOrder);
+});
+
+// Debug endpoint to check current user
+app.get('/api/debug/user', authenticateJWT, async (req, res) => {
+    console.log("Debug endpoint hit - User ID:", req.userId);
+    res.json({ userId: req.userId, message: "Current authenticated user" });
 });
 
 const PORT = process.env.PORT;

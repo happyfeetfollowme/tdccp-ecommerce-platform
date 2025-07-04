@@ -108,13 +108,22 @@ app.get('/api/products', async (req, res) => {
     res.json(products);
 });
 
+// Get a single product by ID
 app.get('/api/products/:id', async (req, res) => {
     const { id } = req.params;
-    const product = await prisma.product.findUnique({ where: { id } });
-    if (!product) {
-        return res.status(404).send('Product not found');
+    try {
+        const product = await prisma.product.findUnique({
+            where: { id },
+        });
+        if (product) {
+            res.json(product);
+        } else {
+            res.status(404).json({ error: 'Product not found' });
+        }
+    } catch (error) {
+        console.error(`Error fetching product ${id}:`, error);
+        res.status(500).json({ error: 'Internal server error' });
     }
-    res.json(product);
 });
 
 app.post('/api/products', authenticateJWT, async (req, res) => {

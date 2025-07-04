@@ -40,8 +40,16 @@ passport.use(new DiscordStrategy({
             user = await prisma.user.create({
                 data: {
                     discordId: profile.id,
-                    email: profile.email
+                    email: profile.email,
+                    discordUsername: profile.username,
+                    role: 'USER'
                 }
+            });
+        } else {
+            // Update discordUsername if it changed
+            user = await prisma.user.update({
+                where: { id: user.id },
+                data: { discordUsername: profile.username }
             });
         }
 
@@ -53,32 +61,38 @@ passport.use(new DiscordStrategy({
 
 app.get('/api/auth/discord', passport.authenticate('discord'));
 
-app.get('/api/auth/discord/callback', passport.authenticate('discord', { failureRedirect: '/' }), (req, res) => {
+app.get('/api/auth/discord/callback', passport.authenticate('discord', { failureRedirect: 'http://localhost:8080/login-error' }), (req, res) => {
     const token = jwt.sign({ userId: req.user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-    res.json({ token });
+    res.redirect(`http://localhost:8080/auth/discord/callback?token=${token}`);
 });
 
 const authenticateJWT = (req, res, next) => {
-    const authHeader = req.headers.authorization;
+    const userId = req.headers['x-user-id'];
 
-    if (authHeader) {
-        const token = authHeader.split(' ')[1];
-
-        jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-            if (err) {
-                return res.sendStatus(403);
-            }
-
-            req.user = user;
-            next();
-        });
+    if (userId) {
+        req.user = { userId };
+        next();
     } else {
-        res.sendStatus(401);
+        res.status(401).send('User ID is missing from header.');
     }
 };
 
 app.get('/api/users/me', authenticateJWT, async (req, res) => {
-    const user = await prisma.user.findUnique({ where: { id: req.user.userId } });
+    console.log("/api/users/me endpoint hit");
+    console.log("User ID from token:", req.user.userId);
+    const user = await prisma.user.findUnique({ 
+        where: { id: req.user.userId },
+        select: {
+            id: true,
+            email: true,
+            discordId: true,
+            discordUsername: true,
+            createdAt: true,
+            updatedAt: true,
+            role: true,
+        }
+    });
+    console.log("User found in DB:", user);
     res.json(user);
 });
 

@@ -1,15 +1,26 @@
-// Placeholder for authenticateJWT middleware
-// We will move the actual function here.
+const jwt = require('jsonwebtoken');
 
 const authenticateJWT = (req, res, next) => {
-    // This is a placeholder. In a real application, this would validate a JWT
-    // and extract the userId. For now, we'll assume a userId is passed in a header.
-    const userId = req.headers['x-user-id'];
-    if (userId) {
-        req.userId = userId;
-        next();
+    console.log("Order service authenticateJWT middleware hit");
+    const authHeader = req.headers.authorization;
+
+    if (authHeader) {
+        const token = authHeader.split(' ')[1];
+        console.log("Token received:", token);
+
+        jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+            if (err) {
+                console.error("JWT verification failed:", err);
+                return res.sendStatus(403);
+            }
+
+            req.userId = user.userId; // Extract userId from JWT payload
+            console.log("Authenticated user ID:", req.userId);
+            next();
+        });
     } else {
-        res.status(401).send('Unauthorized');
+        console.log("Authorization header missing");
+        res.sendStatus(401);
     }
 };
 

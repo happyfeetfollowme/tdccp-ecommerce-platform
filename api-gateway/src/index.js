@@ -1,3 +1,4 @@
+require('dotenv').config();
 
 const express = require('express');
 const proxy = require('express-http-proxy');
@@ -49,8 +50,8 @@ const authenticateJWT = (req, res, next) => {
 
 // Public routes that do not require authentication
 const publicRoutes = [
-    { method: 'POST', path: '/api/auth/login' },
-    { method: 'POST', path: '/api/auth/register' },
+    { method: 'GET', path: '/api/auth/discord' },
+    { method: 'GET', path: '/api/auth/discord/callback' },
     { method: 'GET', path: '/api/products' }
 ];
 
@@ -73,20 +74,66 @@ app.use((req, res, next) => {
 
 
 // Service URLs from environment variables for flexibility
-const USER_SERVICE_URL = process.env.USER_SERVICE_URL || 'http://user-service:3001';
-const PRODUCT_SERVICE_URL = process.env.PRODUCT_SERVICE_URL || 'http://product-service:3002';
-const ORDER_SERVICE_URL = process.env.ORDER_SERVICE_URL || 'http://order-service:3003';
-const PAYMENT_SERVICE_URL = process.env.PAYMENT_SERVICE_URL || 'http://payment-service:3004';
+const USER_SERVICE_URL = process.env.USER_SERVICE_URL;
+const PRODUCT_SERVICE_URL = process.env.PRODUCT_SERVICE_URL;
+const ORDER_SERVICE_URL = process.env.ORDER_SERVICE_URL;
+const PAYMENT_SERVICE_URL = process.env.PAYMENT_SERVICE_URL;
 
 
 // Routing
-app.use('/api/auth', proxy(USER_SERVICE_URL));
-app.use('/api/users', proxy(USER_SERVICE_URL));
-app.use('/api/products', proxy(PRODUCT_SERVICE_URL));
-app.use('/api/cart', proxy(ORDER_SERVICE_URL));
-app.use('/api/orders', proxy(ORDER_SERVICE_URL));
-app.use('/api/admin/orders', proxy(ORDER_SERVICE_URL));
-app.use('/api/payments', proxy(PAYMENT_SERVICE_URL));
+app.use('/api/auth/discord', proxy(USER_SERVICE_URL, {
+    proxyReqPathResolver: function (req) {
+        return req.originalUrl;
+    }
+}));
+app.use('/api/auth/discord/callback', proxy(USER_SERVICE_URL, {
+    proxyReqPathResolver: function (req) {
+        return req.originalUrl;
+    }
+}));
+app.use('/api/users', proxy(USER_SERVICE_URL, {
+    proxyReqPathResolver: function (req) {
+        return req.originalUrl;
+    },
+    proxyReqOptDecorator: function(proxyReqOpts, srcReq) {
+        if (srcReq.user) {
+            proxyReqOpts.headers['X-User-Id'] = srcReq.user.userId;
+        }
+        return proxyReqOpts;
+    }
+}));
+app.use('/api/products', proxy(PRODUCT_SERVICE_URL, {
+    proxyReqPathResolver: function (req) {
+        return req.originalUrl;
+    }
+}));
+app.use('/api/orders', proxy(ORDER_SERVICE_URL, {
+    proxyReqPathResolver: function (req) {
+        return req.originalUrl;
+    },
+    proxyReqOptDecorator: function(proxyReqOpts, srcReq) {
+        if (srcReq.user) {
+            proxyReqOpts.headers['X-User-Id'] = srcReq.user.userId;
+        }
+        return proxyReqOpts;
+    }
+}));
+app.use('/api/cart', proxy(ORDER_SERVICE_URL, {
+    proxyReqPathResolver: function (req) {
+        return req.originalUrl;
+    },
+    proxyReqOptDecorator: function(proxyReqOpts, srcReq) {
+        if (srcReq.user) {
+            proxyReqOpts.headers['X-User-Id'] = srcReq.user.userId;
+        }
+        return proxyReqOpts;
+    }
+}));
+app.use('/api/payments', proxy(PAYMENT_SERVICE_URL, {
+    proxyReqPathResolver: function (req) {
+        return req.originalUrl;
+    }
+}));
 
 
 // Generic error handler
