@@ -7,7 +7,7 @@ This document provides a detailed design for the User Service, which is responsi
 -   User registration (Discord OAuth only).
 -   User authentication and session management (JWT).
 -   User profile management.
--   Securely storing and managing user credentials.
+-   Securely storing and managing user credentials and roles.
 
 ## 2. Database Schema
 
@@ -25,10 +25,16 @@ generator client {
   provider = "prisma-client-js"
 }
 
+enum Role {
+  USER
+  ADMIN
+}
+
 model User {
   id           String  @id @default(cuid())
   email        String  @unique
   discordId    String  @unique
+  role         Role    @default(USER)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }
@@ -54,7 +60,7 @@ This section details the logic for each API endpoint.
     3.  Use the access token to fetch the user's profile (including Discord ID and email) from the Discord API.
     4.  Check if a user with this `discordId` already exists.
     5.  **If user exists:** Log them in by generating and returning a JWT.
-    6.  **If user does not exist:** Create a new `User` record with their Discord ID and email. Generate and return a JWT.
+    6.  **If user does not exist:** Create a new `User` record with their Discord ID, email, and a default `role` of `USER`. Generate and return a JWT.
 
 ### `POST /api/auth/logout`
 
@@ -70,7 +76,7 @@ This section details the logic for each API endpoint.
 -   **Logic:**
     1.  Extract the `userId` from the JWT payload.
     2.  Fetch the user from the database using the `userId`.
-    3.  Return the user object.
+    3.  Return the user object, including their `role`.
 
 ### `PUT /api/users/me`
 
@@ -87,3 +93,20 @@ This section details the logic for each API endpoint.
     2.  Validate the request body.
     3.  Update the user's information in the database.
     4.  Return the updated user object.
+
+### `PUT /api/users/:id/role`
+
+-   **Description:** Updates the role of a specific user. This is an admin-only endpoint.
+-   **Authentication:** Requires a valid JWT from a user with the `ADMIN` role.
+-   **Request Body:**
+    ```json
+    {
+      "role": "ADMIN"
+    }
+    ```
+-   **Logic:**
+    1.  Verify the JWT and check if the authenticated user has the `ADMIN` role.
+    2.  Extract the `userId` from the URL parameters.
+    3.  Validate the request body to ensure the role is a valid `Role` enum value.
+    4.  Update the user's role in the database.
+    5.  Return the updated user object.
